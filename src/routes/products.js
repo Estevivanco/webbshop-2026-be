@@ -1,21 +1,15 @@
 import { Router } from "express";
 import { validateProduct, validateProductResult } from "../middleware/productValidation.js";
-import { getProducts, createProduct } from "../db/products.js";
+import { getProducts, createProduct } from "../controller/ProductController.js";
 const router = Router();
 
-router.get("/", async (req, res) => {
-  const products = await getProducts();
-  res.json(products);
-});
+router.get("/", getProducts);
 
 //TODO: Add more routes as needed
 
 //TODO GET /products/:slug
 
-router.post("/", validateProduct, validateProductResult, async (req, res) => {
-  const product = await createProduct(req.body);
-  res.status(201).json(product);
-});
+router.post("/", validateProduct, validateProductResult, createProduct);
 
 //TODO PUT /products/:slug
 

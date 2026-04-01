@@ -5,26 +5,44 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  }, 
+  brand: {
+    type: String,
+    required: true,
+  },
   price: {
     type: Number,
     required: true,
     min: 0,
   },
-  stock: {
-    type: Number,
-    required: true,
+  images: [
+    {
+      url: { type: String },
+      description: { type: String }
+    }
+  ],
+  sizes: [
+      {
+        size:  { type: String, required: true },
+        stock: { type: Number, required: true, default: 0, min: 0 },
+      }
+  ],
+  dropAt: { 
+    type: Date, required: true },
+  dropEnd: { 
+    type: Date },
+  dropStatus: {
+    type:    String,
+    enum:    ["Upcoming", "Live", "SoldOut", "DropEnd"],
+    default: "Upcoming",
   },
-  image: {
-    type: String,
-    required: true,
-  },
-  slug: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  //TODO: Add more fields as needed
-});
+},
+{ timestamps: true }
+);
 
 const Product = mongoose.model("Product", productSchema);
 

@@ -31,5 +31,5 @@ export async function deleteProduct(req, res) {
   if (!product) {
     return res.status(404).json({ error: "Product not found" });
   }
-  res.json(204).send()
+  res.status(204).send()
 }

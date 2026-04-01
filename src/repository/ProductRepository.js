@@ -16,7 +16,7 @@ class ProductRepository {
     }
   }
 
-  async getProductsBySlug(slug) {
+  async getProductBySlug(slug) {
     return await Product.findOne({ slug });
   }
 

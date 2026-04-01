@@ -10,10 +10,10 @@ describe("Product model", () => {
   it("should create a new product", async () => {
     const product = new Product({
       name: "Product 1",
+      brand: "Nike",
       price: 100,
-      stock: 10,
-      image: "image.jpg",
-      slug: "product-1",
+      dropAt: new Date("2026-01-01"),
+      sizes: [{ size: "42", stock: 10 }],
     });
     await product.save();
     expect(product).toBeDefined();
@@ -22,10 +22,10 @@ describe("Product model", () => {
   it("should not create a product with a negative price", async () => {
     const product = new Product({
       name: "Product 1",
+      brand: "Nike",
       price: -100,
-      stock: 10,
-      image: "image.jpg",
-      slug: "product-1",
+      dropAt: new Date("2026-01-01"),
+      sizes: [{ size: "42", stock: 10 }],
     });
     await expect(product.save()).rejects.toThrow();
   });
@@ -33,10 +33,10 @@ describe("Product model", () => {
   it("should not create a product with a negative stock", async () => {
     const product = new Product({
       name: "Product 1",
+      brand: "Nike",
       price: 100,
-      stock: -10,
-      image: "image.jpg",
-      slug: "product-1",
+      dropAt: new Date("2026-01-01"),
+      sizes: [{ size: "42", stock: -10 }],
     });
     await expect(product.save()).rejects.toThrow();
   });

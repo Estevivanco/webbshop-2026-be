@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
-    trime: true,
+    trim: true,
     minLength: 3,             
     maxLength: 50,
   },
@@ -70,8 +70,9 @@ const userSchema = new mongoose.Schema({
     default: true,
     index: true,
   },
-  timstamps: true,
-});
+}, 
+{  timstamps: true}
+);
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("passwordHash")) {

@@ -4,12 +4,30 @@ export const validateProduct = [
   body("name").notEmpty().withMessage("Name is required"),
   body("brand").notEmpty().withMessage("Brand is required"),
   body("price").isFloat({ min: 0 }).withMessage("Price must be greater than 0"),
-  body("dropAt").isISO8601({ strict: true }).withMessage("dropAt must be a valid date (YYYY-MM-DD)"),
-  body("dropEnd").optional().isISO8601({ strict: true }).withMessage("dropEnd must be a valid date (YYYY-MM-DD)"),
-  body("sizes").isArray({ min: 1 }).withMessage("sizes must be a non-empty array"),
-  body("sizes.*.size").notEmpty().withMessage("Each size must have a size value"),
-  body("sizes.*.stock").isInt({ min: 0 }).withMessage("Each size must have a stock of 0 or more"),
-   body("description").optional().isString(),
+  body("dropAt")
+    .isString()
+    .withMessage("dropAt must be a string")
+    .isISO8601({ strict: true })
+    .withMessage("dropAt must be a valid date (YYYY-MM-DD)"),
+  body("dropEnd")
+    .optional()
+    .isString()
+    .withMessage("dropEnd must be a string")
+    .isISO8601({ strict: true })
+    .withMessage("dropEnd must be a valid date (YYYY-MM-DD)"),
+  body("sizes")
+    .isArray({ min: 1 })
+    .withMessage("sizes must be a non-empty array"),
+  body("sizes.*.size")
+    .notEmpty()
+    .withMessage("Each size must have a size value"),
+  body("sizes.*.stock")
+    .isInt({ min: 0 })
+    .withMessage("Each size must have a stock of 0 or more"),
+  body("images").optional().isArray().withMessage("images must be an array"),
+  body("images.*.url").optional().isURL().withMessage("Each image must have a valid URL"),
+  body("images.*.description").optional().isString(),
+  body("description").optional().isString(),
   body("color.name").optional().isString(),
   body("color.hex")
     .optional()
@@ -18,21 +36,46 @@ export const validateProduct = [
 ];
 
 export const validateProductUpdate = [
-    body("name").optional().notEmpty().withMessage("Name cannot be empty"),
-    body("brand").optional().notEmpty().withMessage("Brand cannot be empty"),
-    body("price").optional().isFloat({ min: 0 }).withMessage("Price must be 0 or greater"),
-    body("dropAt").optional().isISO8601().withMessage("dropAt must be a valid date"),
-    body("dropEnd").optional().isISO8601().withMessage("dropEnd must be a valid date"),
-    body("sizes").optional().isArray({ min: 1 }).withMessage("sizes must be a non-empty array"),
-    body("sizes.*.size").optional().notEmpty().withMessage("Each size must have a size value"),
-    body("sizes.*.stock").optional().isInt({ min: 0 }).withMessage("Each size must have a valid stock"),
-    body("description").optional().isString(),
-    body("color.name").optional().isString(),
-    body("color.hex")
-      .optional()
-      .matches(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/)
-      .withMessage("hex must be a valid color, e.g. #fff or #1a1a1a"),
-  ];
+  body("name").optional().notEmpty().withMessage("Name cannot be empty"),
+  body("brand").optional().notEmpty().withMessage("Brand cannot be empty"),
+  body("price")
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage("Price must be 0 or greater"),
+  body("dropAt")
+    .optional()
+    .isString()
+    .withMessage("dropAt must be a string")
+    .isISO8601({ strict: true })
+    .withMessage("dropAt must be a valid date (YYYY-MM-DD)"),
+  body("dropEnd")
+    .optional()
+    .isString()
+    .withMessage("dropEnd must be a string")
+    .isISO8601({ strict: true })
+    .withMessage("dropEnd must be a valid date (YYYY-MM-DD)"),
+  body("sizes")
+    .optional()
+    .isArray({ min: 1 })
+    .withMessage("sizes must be a non-empty array"),
+  body("sizes.*.size")
+    .optional()
+    .notEmpty()
+    .withMessage("Each size must have a size value"),
+  body("sizes.*.stock")
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage("Each size must have a valid stock"),
+  body("images").optional().isArray().withMessage("images must be an array"),
+  body("images.*.url").optional().isURL().withMessage("Each image must have a valid URL"),
+  body("images.*.description").optional().isString(),
+  body("description").optional().isString(),
+  body("color.name").optional().isString(),
+  body("color.hex")
+    .optional()
+    .matches(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/)
+    .withMessage("hex must be a valid color, e.g. #fff or #1a1a1a"),
+];
 
 export const validateProductResult = (req, res, next) => {
   const errors = validationResult(req);

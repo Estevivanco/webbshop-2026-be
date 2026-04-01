@@ -6,8 +6,15 @@ export async function getProducts(req, res) {
 }
 
 export async function createProduct(req, res) {
-  const product = await ProductRepository.createProduct(req.body);
-  res.status(201).json(product);
+  try {
+    const product = await ProductRepository.createProduct(req.body);
+    res.status(201).json(product);
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ error: "A product with this name already exists" });
+    }
+    res.status(500).json({ error: "Failed to create product" });
+  }
 }
 
 export async function getProductBySlug(req, res) {

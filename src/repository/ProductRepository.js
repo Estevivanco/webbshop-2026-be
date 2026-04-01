@@ -16,7 +16,21 @@ class ProductRepository {
     }
   }
 
-  //TODO: Add more methods as needed
+  async getProductsBySlug(slug) {
+    return await Product.findOne({ slug });
+  }
+
+  async updateProduct(slug, data) {
+    return await Product.findOneAndUpdate(
+      { slug },
+      data,
+      { new: true, runValidators: true }
+    );
+  }
+
+  async deleteProduct(slug) {
+    return await Product.findOneAndDelete({ slug });
+  }
 }
 
 export default new ProductRepository();

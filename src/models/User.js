@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -50,15 +50,6 @@ const userSchema = new mongoose.Schema({
       trim: true,                                         
     },
   },
-  wishlist: [{
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
-    },
-    size: { 
-      type: String, 
-      trim: true },
-  }],
   role: {
     type: String,
     enum: ["customer", "admin"],
@@ -71,24 +62,23 @@ const userSchema = new mongoose.Schema({
     index: true,
   },
 }, 
-{  timstamps: true}
+{ timestamps: true }
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("passwordHash")) {
-    return next();
+  if (this.isModified("passwordHash")) {
+    const salt = await bcrypt.genSalt(10);
+    this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
   }
-  const saltRounds = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.passwordHash, saltRounds)
   next();
 });
 
-userSchema.pre("save", async function (next){
-  if (!this.isModified("email")){
-    this.email = this.email.toLowercase().trim();
+userSchema.pre("save", async function (next) {
+  if (this.isModified("email")) {
+    this.email = this.email.toLowerCase().trim();
   }
-  next()
-})
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 

@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Email is required"],
     unique: true,
-    lowercase: true,
+    lowerCase: true,
     trim: true,
     index: true,
   },
@@ -85,7 +85,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.pre("save", async function (next){
   if (!this.isModified("email")){
-    this.email = this.email.toLowercase().time();
+    this.email = this.email.toLowercase().trim();
   }
   next()
 })

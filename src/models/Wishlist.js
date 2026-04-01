@@ -1,7 +1,4 @@
 import mongoose from "mongoose";
-
-// Istället för en inbäddad array på User sparar vi varje
-// önskelista-rad som ett eget dokument.
  
 const wishlistItemSchema = new mongoose.Schema(
   {

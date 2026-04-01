@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema(
             required: true,
           },
           size: {
-            type: Number,
+            type: String,
             required: true,
           },
           unitPrice: {
@@ -25,7 +25,7 @@ const orderSchema = new mongoose.Schema(
             min: 0,
           },
         },
-      ]
+      ],
     },
     orderStatus: {
       type: String,
@@ -33,7 +33,7 @@ const orderSchema = new mongoose.Schema(
       default: "Pending",
     },
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { virtuals: true } },
 );
 
 orderSchema.virtual("orderTotal").get(function () {

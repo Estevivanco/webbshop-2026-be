@@ -6,8 +6,37 @@ export async function getProducts(req, res) {
 }
 
 export async function createProduct(req, res) {
-  const product = await ProductRepository.createProduct(req.body);
-  res.status(201).json(product);
+  try {
+    const product = await ProductRepository.createProduct(req.body);
+    res.status(201).json(product);
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ error: "A product with this name already exists" });
+    }
+    res.status(500).json({ error: "Failed to create product" });
+  }
 }
 
-//TODO: Add more controller functions as needed
+export async function getProductBySlug(req, res) {
+  const product = await ProductRepository.getProductBySlug(req.params.slug);
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+  res.json(product)
+}
+
+export async function updateProduct(req, res) {
+  const product = await ProductRepository.updateProduct(req.params.slug, req.body);
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+  res.json(product)
+}
+
+export async function deleteProduct(req, res) {
+  const product = await ProductRepository.deleteProduct(req.params.slug);
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+  res.status(204).send()
+}

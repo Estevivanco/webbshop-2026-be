@@ -1,25 +1,82 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
-    required: true,
+    required: [true, "Email is required"],
+    unique: true,
+    lowerCase: true,
+    trim: true,
+    index: true,
   },
-  password: {
+  passwordHash: {
     type: String,
     required: true,
+    select: false,
   },
+  firstName: {
+    type: String,
+    required: true,
+    trim: true,
+    minLength: 3,             
+    maxLength: 50,
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true,
+    minLength: 3,             
+    maxLength: 50,
+  },
+  location: {
+    address:{
+      type: String,
+      required: true,
+      trim: true,
+      minLength: 2,
+      maxLength: 100,
+    },
+    city: {
+      type: String,
+      required: true,
+      trim: true,
+      minLength: 2,
+      maxLength: 100
+    },
+    postCode: {
+      type: String,
+      required: true,                               
+      trim: true,                                         
+    },
+  },
+  role: {
+    type: String,
+    enum: ["customer", "admin"],
+    default: "customer",
+    index: true,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+    index: true,
+  },
+}, 
+{ timestamps: true }
+);
+
+userSchema.pre("save", async function (next) {
+  if (this.isModified("passwordHash")) {
+    const salt = await bcrypt.genSalt(10);
+    this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
+  }
+  next();
 });
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
+  if (this.isModified("email")) {
+    this.email = this.email.toLowerCase().trim();
   }
-  //TODO: Add salt and hash password
   next();
 });
 

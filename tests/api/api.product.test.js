@@ -9,9 +9,9 @@ describe("API products routes", () => {
     await clearDatabase();
 
     const products = [
-      new Product({ name: "Product 1", price: 100, stock: 10, image: "image.jpg", slug: "product-1" }),
-      new Product({ name: "Product 2", price: 200, stock: 20, image: "image.jpg", slug: "product-2" }),
-      new Product({ name: "Product 3", price: 300, stock: 30, image: "image.jpg", slug: "product-3" })
+      new Product({ name: "Product 1", brand: "Nike", price: 100, dropAt: new Date("2026-01-01"), sizes: [{ size: "42", stock: 10 }] }),
+      new Product({ name: "Product 2", brand: "Nike", price: 200, dropAt: new Date("2026-01-01"), sizes: [{ size: "43", stock: 20 }] }),
+      new Product({ name: "Product 3", brand: "Nike", price: 300, dropAt: new Date("2026-01-01"), sizes: [{ size: "44", stock: 30 }] }),
     ];
     await Promise.all(products.map(product => product.save()));
   });
@@ -35,7 +35,7 @@ describe("API products routes", () => {
     it("should create a new product", async () => {
       const response = await request(app)
         .post("/products")
-        .send({ name: "Product 4", price: 400, stock: 40, image: "image.jpg", slug: "product-4" })
+        .send({ name: "Product 4", brand: "Nike", price: 400, dropAt: "2026-01-01", sizes: [{ size: "45", stock: 40 }] })
         .expect(201)
         .expect("Content-Type", /json/);
       const body = response.body;

@@ -61,21 +61,20 @@ const userSchema = new mongoose.Schema({
     default: true,
     index: true,
   },
-  timstamps: true,
-});
+}, { timestamps: true });
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("passwordHash")) {
     return next();
   }
   const saltRounds = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.passwordHash, saltRounds)
+  this.passwordHash = await bcrypt.hash(this.passwordHash, saltRounds)
   next();
 });
 
 userSchema.pre("save", async function (next){
   if (!this.isModified("email")){
-    this.email = this.email.toLowercase().time();
+    this.email = this.email.toLowerCase().trim();
   }
   next()
 })

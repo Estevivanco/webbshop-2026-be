@@ -10,4 +10,26 @@ export async function createProduct(req, res) {
   res.status(201).json(product);
 }
 
-//TODO: Add more controller functions as needed
+export async function getProductBySlug(req, res) {
+  const product = await ProductRepository.getProductBySlug(req.params.slug);
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+  res.json(product)
+}
+
+export async function updateProduct(req, res) {
+  const product = await ProductRepository.updateProduct(req.params.slug, req.body);
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+  res.json(product)
+}
+
+export async function deleteProduct(req, res) {
+  const product = await ProductRepository.deleteProduct(req.params.slug);
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+  res.json(204).send()
+}

@@ -7,6 +7,12 @@ const router = Router();
 
 
 router.get("/users/:id", getUserById);
+
+
+//admin
 router.get("/users", getAllUsers);
 router.get('/users/profile', authenticateToken, getProfile);
+
+
+
 export default router;

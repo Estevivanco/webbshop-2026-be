@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import productsRouter from "./routes/products.js";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import wishlistRouter from "./routes/wishlistRoutes.js"
 import cors from "cors";
 
 const app = express();
@@ -38,6 +39,7 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
+app.use("/wishlist", wishlistRouter);
 app.use("/products", productsRouter);
 app.use("/auth", authRouter);
 app.use("/", userRouter);

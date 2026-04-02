@@ -20,7 +20,8 @@ export const validateProduct = [
     .withMessage("sizes must be a non-empty array"),
   body("sizes.*.size")
     .notEmpty()
-    .withMessage("Each size must have a size value"),
+    .matches(/^\d+$/)
+    .withMessage("Each size must be a number"),
   body("sizes.*.stock")
     .isInt({ min: 0 })
     .withMessage("Each size must have a stock of 0 or more"),
@@ -62,7 +63,8 @@ export const validateProductUpdate = [
   body("sizes.*.size")
     .optional()
     .notEmpty()
-    .withMessage("Each size must have a size value"),
+    .matches(/^\d+$/)
+    .withMessage("Each size must be a number"),
   body("sizes.*.stock")
     .optional()
     .isInt({ min: 0 })

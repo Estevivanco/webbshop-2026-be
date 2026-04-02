@@ -7,9 +7,10 @@ import {
   getOrdersByUser,
 } from "../controller/OrderController.js";
 import { authenticateToken } from "../middleware/auth.js";
+import { validateOrder } from "../middleware/orderValidation.js";
 const router = Router();
 
-router.post("/", authenticateToken, createOrder);
+router.post("/", authenticateToken, validateOrder, createOrder);
 router.get("/", authenticateToken, getAllOrders);
 router.get("/user/:userId", authenticateToken, getOrdersByUser);
 router.get("/:id", authenticateToken, getOneOrder);

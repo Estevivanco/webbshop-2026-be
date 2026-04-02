@@ -42,7 +42,7 @@ const productSchema = new mongoose.Schema(
           validator: (val) =>
             !val || /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(val),
           message:
-            "hex måste vara ett giltigt färgvärde, ex: #fff eller #1a1a1a",
+            "hex must be a valid color code, ex: #fff or #1a1a1a",
         },
       },
     },
@@ -91,7 +91,7 @@ productSchema.pre("save", function (next) {
 productSchema.path("dropEnd").validate(function (val) {
   if (!val) return true;
   return val > this.dropAt;
-}, "dropEnd måste vara efter dropAt");
+}, "dropEnd must be after dropAt");
 
 // VIRTUAL: totalt lager för produkten
 productSchema.virtual("totalStock").get(function () {

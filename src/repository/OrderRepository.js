@@ -8,18 +8,19 @@ class OrderRepository {
 
   async findAll() {
     return await Order.find()
-      .populate("user", "name email")
+      .populate("user", "firstName lastName email")
       .populate("items.product", "name price");
   }
 
   async findById(id) {
     return await Order.findById(id)
-      .populate("user", "name email")
+      .populate("user", "firstName lastName email")
       .populate("items.product", "name price");
   }
 
   async findByUser(userId) {
     return await Order.find({ user: userId })
+      .populate("user", "firstName lastName email")
       .populate("items.product", "name price");
   }
 
@@ -27,7 +28,7 @@ class OrderRepository {
     return await Order.findByIdAndUpdate(
       id,
       { orderStatus },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
   }
 }

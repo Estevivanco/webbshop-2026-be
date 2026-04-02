@@ -20,7 +20,8 @@ export const validateProduct = [
     .withMessage("sizes must be a non-empty array"),
   body("sizes.*.size")
     .notEmpty()
-    .withMessage("Each size must have a size value"),
+    .matches(/^\d+$/)
+    .withMessage("Each size must be a number"),
   body("sizes.*.stock")
     .isInt({ min: 0 })
     .withMessage("Each size must have a stock of 0 or more"),
@@ -28,8 +29,9 @@ export const validateProduct = [
   body("images.*.url").optional().isURL().withMessage("Each image must have a valid URL"),
   body("images.*.description").optional().isString(),
   body("description").optional().isString(),
-  body("color.name").optional().isString(),
-  body("color.hex")
+  body("colors").optional().isArray().withMessage("colors must be an array"),
+  body("colors.*.name").optional().isString(),
+  body("colors.*.hex")
     .optional()
     .matches(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/)
     .withMessage("hex must be a valid color, e.g. #fff or #1a1a1a"),
@@ -61,7 +63,8 @@ export const validateProductUpdate = [
   body("sizes.*.size")
     .optional()
     .notEmpty()
-    .withMessage("Each size must have a size value"),
+    .matches(/^\d+$/)
+    .withMessage("Each size must be a number"),
   body("sizes.*.stock")
     .optional()
     .isInt({ min: 0 })
@@ -70,8 +73,9 @@ export const validateProductUpdate = [
   body("images.*.url").optional().isURL().withMessage("Each image must have a valid URL"),
   body("images.*.description").optional().isString(),
   body("description").optional().isString(),
-  body("color.name").optional().isString(),
-  body("color.hex")
+  body("colors").optional().isArray().withMessage("colors must be an array"),
+  body("colors.*.name").optional().isString(),
+  body("colors.*.hex")
     .optional()
     .matches(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/)
     .withMessage("hex must be a valid color, e.g. #fff or #1a1a1a"),

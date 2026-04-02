@@ -6,6 +6,7 @@ export async function connectToDatabase() {
   if (!MONGODB_URI) {
     throw new Error("MONGODB_URI is not defined");
   }
+  console.log("Connecting to", MONGODB_URI)
   try {
     await mongoose.connect(MONGODB_URI);
     console.log("Connected to MongoDB");

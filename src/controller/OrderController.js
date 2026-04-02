@@ -9,7 +9,12 @@ export const createOrder = async (req, res) => {
       items.map(async (item) => {
         const product = await ProductRepository.getProductById(item.product);
         if (!product) throw new Error(`Product ${item.product} not found.`);
-        return {
+
+        const sizeCheck = product.sizes.find(s => s.size === item.size)
+        if(!sizeCheck) throw new Error(`Size ${item.size} not avalible for ${product.name}`)
+        if(sizeCheck.stock === 0) throw new Error(`Size ${item.size} is out of stock for ${product.name}`)
+        
+          return {
           product: item.product,
           size: item.size,
           unitPrice: product.price,
@@ -22,6 +27,10 @@ export const createOrder = async (req, res) => {
       items: itemsWithPrice,
     });
 
+    await Promise.all(
+      itemsWithPrice.map(item => ProductRepository.decrementStock(item.product, item.size))
+    )
+
     res.status(201).json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -29,10 +38,13 @@ export const createOrder = async (req, res) => {
 };
 
 export const getAllOrders = async (req, res) => {
+  console.log("getAllOrders hit");
   try {
     const orders = await OrderRepository.findAll();
+    console.log("orders fetched:", orders);
     res.status(200).json(orders);
   } catch (error) {
+    console.error("getAllOrders error:", error);
     res.status(500).json({ message: error.message });
   }
 };

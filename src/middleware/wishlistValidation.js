@@ -3,7 +3,7 @@ import { body, validationResult } from "express-validator";
 export const validateWishlist = [
     body("productId").notEmpty().isMongoId().withMessage("Valid product is required"),
     body("size")
-        .notEmpty().isString().withMessage
+        .isString().notEmpty()
         .matches(/^\d+$/).withMessage("Size must be a number")
 ];
 

@@ -1,7 +1,7 @@
 import WishlistRepository from "../repository/WishlistRepository.js";
 
 export async function getWishlist(req, res) {
-  const userId = req.user.id;
+  const userId = req.user.userId;
   try {
     const wishlist = await WishlistRepository.getByUser(userId);
     res.json(wishlist);
@@ -11,7 +11,7 @@ export async function getWishlist(req, res) {
 }
 
 export async function addToWishList(req, res) {
-  const userId = req.user.id;
+  const userId = req.user.userId;
   const { productId, size } = req.body;
   try {
     const wishlist = await WishlistRepository.addItem(userId, productId, size);
@@ -25,7 +25,7 @@ export async function addToWishList(req, res) {
 }
 
 export async function removeFromWishlist(req, res) {
-  const userId = req.user.id;
+  const userId = req.user.userId;
   const { itemId } = req.params;
   try {
     const wishlist = await WishlistRepository.removeItem(userId, itemId);

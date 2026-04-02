@@ -28,8 +28,9 @@ export const validateProduct = [
   body("images.*.url").optional().isURL().withMessage("Each image must have a valid URL"),
   body("images.*.description").optional().isString(),
   body("description").optional().isString(),
-  body("color.name").optional().isString(),
-  body("color.hex")
+  body("colors").optional().isArray().withMessage("colors must be an array"),
+  body("colors.*.name").optional().isString(),
+  body("colors.*.hex")
     .optional()
     .matches(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/)
     .withMessage("hex must be a valid color, e.g. #fff or #1a1a1a"),
@@ -70,8 +71,9 @@ export const validateProductUpdate = [
   body("images.*.url").optional().isURL().withMessage("Each image must have a valid URL"),
   body("images.*.description").optional().isString(),
   body("description").optional().isString(),
-  body("color.name").optional().isString(),
-  body("color.hex")
+  body("colors").optional().isArray().withMessage("colors must be an array"),
+  body("colors.*.name").optional().isString(),
+  body("colors.*.hex")
     .optional()
     .matches(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/)
     .withMessage("hex must be a valid color, e.g. #fff or #1a1a1a"),

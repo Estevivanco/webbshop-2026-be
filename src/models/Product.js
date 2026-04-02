@@ -29,23 +29,24 @@ const productSchema = new mongoose.Schema(
       default: "",
       trim: true,
     },
-    color: {
-      name: {
-        type: String,
-        trim: true,
-      },
-      hex: {
-        type: String,
-        trim: true,
-        // Validerar att hex-koden är korrekt format: #fff eller #ffffff
-        validate: {
-          validator: (val) =>
-            !val || /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(val),
-          message:
-            "hex must be a valid color code, ex: #fff or #1a1a1a",
+    colors: [
+      {
+        name: {
+          type: String,
+          trim: true,
+        },
+        hex: {
+          type: String,
+          trim: true,
+          validate: {
+            validator: (val) =>
+              !val || /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(val),
+            message:
+              "hex must be a valid color code, ex: #fff or #1a1a1a",
+          },
         },
       },
-    },
+    ],
     images: [
       {
         url: { type: String },

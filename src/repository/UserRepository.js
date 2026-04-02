@@ -23,12 +23,24 @@ class UserRepository {
     return User.findByIdAndUpdate(id, { $set: data }, { new: true, runValidators: true });
   }
 
+  async delete(id) {
+    return User.findByIdAndDelete(id)
+  }
+
+  async recordLogin(id) {
+    return User.findByIdAndUpdate(id, { $set: { lastLoginAt: new Date() } });
+  }
+
   async deactivate(id) {
     return User.findByIdAndUpdate(id, { $set: { isActive: false } }, { new: true });
   }
 
   async reactivate(id) {
     return User.findByIdAndUpdate(id, { $set: { isActive: true } }, { new: true });
+  }
+
+  async setRole(id, role) {
+    return User.findByIdAndUpdate(id, { $set: { role } }, { new: true });
   }
 
     async findAll({ role, isActive, limit = 50, skip = 0} = {}) {

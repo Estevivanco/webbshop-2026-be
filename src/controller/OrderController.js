@@ -6,7 +6,7 @@ export const createOrder = async (req, res) => {
 
   try {
     const order = await Order.create({
-      user: req.user._id, // comes from authenticate middleware
+      user: req.user.userId, // comes from authenticate middleware
       items,
     });
 
@@ -41,7 +41,7 @@ export const getOneOrder = async (req, res) => {
     }
 
     // Users can only view their own orders
-    if (req.user.role !== "admin" && order.user._id.toString() !== req.user._id.toString()) {
+    if (req.user.role !== "admin" && order.user.userId.toString() !== req.user.userId.toString()) {
       return res.status(403).json({ message: "Not authorized." });
     }
 
@@ -76,7 +76,7 @@ export const updateOrderStatus = async (req, res) => {
 export const getOrdersByUser = async (req, res) => {
   try {
     // Users can only view their own orders
-    if (req.user.role !== "admin" && req.params.userId !== req.user._id.toString()) {
+    if (req.user.role !== "admin" && req.params.userId !== req.user.userId.toString()) {
       return res.status(403).json({ message: "Not authorized." });
     }
 

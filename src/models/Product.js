@@ -95,6 +95,7 @@ productSchema.path("dropEnd").validate(function (val) {
 
 // VIRTUAL: totalt lager för produkten
 productSchema.virtual("totalStock").get(function () {
+  if(!this.sizes || this.sizes.length === 0) return 0
   return this.sizes.reduce((sum, s) => sum + s.stock, 0);
 });
 

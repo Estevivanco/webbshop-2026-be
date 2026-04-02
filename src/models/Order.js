@@ -37,6 +37,7 @@ const orderSchema = new mongoose.Schema(
 );
 
 orderSchema.virtual("orderTotal").get(function () {
+  if(!this.items || this.items.length === 0) return 0
   return this.items.reduce((sum, item) => sum + item.unitPrice, 0);
 });
 

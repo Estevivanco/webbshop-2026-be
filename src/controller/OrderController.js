@@ -1,13 +1,26 @@
 import Order from "../models/Order.js";
+import Product from "../models/Product.js"
 
 // POST /api/orders
 export const createOrder = async (req, res) => {
   const { items } = req.body;
 
   try {
+    const itemsWithPrice = await Promise.all(
+      items.map(async (item) => {
+        const product = await Product.findById(item.product);
+        if (!product) throw new Error(`Product ${item.product} not found.`);
+        return {
+          product: item.product,
+          size: item.size,
+          unitPrice: product.price,
+        };
+      })
+    );
+
     const order = await Order.create({
-      user: req.user.userId, // comes from authenticate middleware
-      items,
+      user: req.user.userId,
+      items: itemsWithPrice,
     });
 
     res.status(201).json(order);

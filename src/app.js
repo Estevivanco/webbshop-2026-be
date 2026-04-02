@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import productsRouter from "./routes/products.js";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import orderRouter from "./routes/order.js"
 import cors from "cors";
 
 const app = express();
@@ -41,6 +42,7 @@ app.get("/health", (req, res) => {
 app.use("/products", productsRouter);
 app.use("/auth", authRouter);
 app.use("/", userRouter);
+app.use("/orders", orderRouter)
 //TODO: Add more routes as needed
 
 export default app;

@@ -1,24 +1,23 @@
-import Order from "../models/Order.js";
-import Product from "../models/Product.js"
+import OrderRepository from "../repository/OrderRepository.js";
+import ProductRepository from "../repository/ProductRepository.js";
 
-// POST /api/orders
 export const createOrder = async (req, res) => {
   const { items } = req.body;
 
   try {
     const itemsWithPrice = await Promise.all(
       items.map(async (item) => {
-        const product = await Product.findById(item.product);
+        const product = await ProductRepository.getProductById(item.product);
         if (!product) throw new Error(`Product ${item.product} not found.`);
         return {
           product: item.product,
           size: item.size,
           unitPrice: product.price,
         };
-      })
+      }),
     );
 
-    const order = await Order.create({
+    const order = await OrderRepository.create({
       user: req.user.userId,
       items: itemsWithPrice,
     });
@@ -29,32 +28,27 @@ export const createOrder = async (req, res) => {
   }
 };
 
-// GET /api/orders
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find()
-      .populate("user", "name email")
-      .populate("items.product", "name price");
-
+    const orders = await OrderRepository.findAll();
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// GET /api/orders/:id
 export const getOneOrder = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id)
-      .populate("user", "name email")
-      .populate("items.product", "name price");
+    const order = await OrderRepository.findById(req.params.id);
 
     if (!order) {
       return res.status(404).json({ message: "Order not found." });
     }
 
-    // Users can only view their own orders
-    if (req.user.role !== "admin" && order.user.userId.toString() !== req.user.userId.toString()) {
+    if (
+      req.user.role !== "admin" &&
+      order.user._id.toString() !== req.user.userId.toString()
+    ) {
       return res.status(403).json({ message: "Not authorized." });
     }
 
@@ -64,15 +58,13 @@ export const getOneOrder = async (req, res) => {
   }
 };
 
-// PATCH /api/orders/:id/status
 export const updateOrderStatus = async (req, res) => {
   const { orderStatus } = req.body;
 
   try {
-    const order = await Order.findByIdAndUpdate(
+    const order = await OrderRepository.updateStatus(
       req.params.id,
-      { orderStatus },
-      { new: true, runValidators: true }
+      orderStatus,
     );
 
     if (!order) {
@@ -85,17 +77,16 @@ export const updateOrderStatus = async (req, res) => {
   }
 };
 
-// GET /api/orders/user/:userId
 export const getOrdersByUser = async (req, res) => {
   try {
-    // Users can only view their own orders
-    if (req.user.role !== "admin" && req.params.userId !== req.user.userId.toString()) {
+    if (
+      req.user.role !== "admin" &&
+      req.params.userId !== req.user.userId.toString()
+    ) {
       return res.status(403).json({ message: "Not authorized." });
     }
 
-    const orders = await Order.find({ user: req.params.userId })
-      .populate("items.product", "name price");
-
+    const orders = await OrderRepository.findByUser(req.params.userId);
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });

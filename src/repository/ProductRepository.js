@@ -5,6 +5,10 @@ class ProductRepository {
     return await Product.find();
   }
 
+  async getProductById(id) {
+    return await Product.findById(id);
+  }
+
   async createProduct(productData) {
     try {
       const product = new Product(productData);
@@ -21,11 +25,10 @@ class ProductRepository {
   }
 
   async updateProduct(slug, data) {
-    return await Product.findOneAndUpdate(
-      { slug },
-      data,
-      { new: true, runValidators: true }
-    );
+    return await Product.findOneAndUpdate({ slug }, data, {
+      new: true,
+      runValidators: true,
+    });
   }
 
   async deleteProduct(slug) {

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { validateProduct, validateProductUpdate, validateProductResult } from "../middleware/productValidation.js";
- import { getProducts, createProduct, getProductBySlug, updateProduct, deleteProduct } from "../controller/ProductController.js";
+import { getProducts, createProduct, getProductBySlug, updateProduct, deleteProduct } from "../controller/ProductController.js";
+
 const router = Router();
 
 router.get("/", getProducts);

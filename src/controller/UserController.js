@@ -1,4 +1,5 @@
 import UserRepository from "../repository/UserRepository.js";
+import bcrypt from "bcrypt";
 //* USER
 //alla kan se.
 //kräver inlogg
@@ -66,6 +67,30 @@ export async function deleteProfile(req, res) {
       error: "Could not deactivate account",
       message: err.message
     });
+  }
+}
+export async function changePassword(req,res){
+  try{
+    const{currentPassword, newPassword} = req.body
+    const user = await UserRepository.findByIdWithPassword(req.userId)
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" })
+    }
+
+    const isValid = await bcrypt.compare(currentPassword, user.passwordHash)
+
+    if(!isValid){
+      return res.status(401).json({error: "Current password is incorrect"})
+    }
+
+    await UserRepository.updatePassword(req.userId, newPassword)
+    res.status(200).json({ message: "Password updated successfully" })
+  } catch(err){
+        res.status(500).json({ 
+        error: "Error updating password",
+        message: err.message
+       });
   }
 }
 //* ADMIN

@@ -1,5 +1,17 @@
 import { Router } from "express";
-import { getProfile, getAllUsers, getUserById, makeAdmin, deactivateUser, updateUser, updateProfile, deleteProfile, reactivateUser, permanentDeleteUser} from "../controller/UserController.js";
+import { 
+    getProfile, 
+    getAllUsers, 
+    getUserById, 
+    makeAdmin, 
+    deactivateUser, 
+    updateUser, 
+    updateProfile,
+    changePassword,
+    deleteProfile, 
+    reactivateUser, 
+    permanentDeleteUser
+} from "../controller/UserController.js";
 import { authenticateToken, requireAdmin} from "../middleware/auth.js";
 import {validateUpdateUser} from '../middleware/userValidation.js';
 
@@ -8,12 +20,8 @@ const router = Router();
 //user routes
 router.get('/users/profile', authenticateToken, getProfile);
 router.put('/users/profile', authenticateToken, updateProfile);
+router.patch('/users/profile/password', authenticateToken, changePassword);
 router.delete('/users/profile', authenticateToken, deleteProfile);
-
-//wishlist routes
-// router.get('/users/wishlist', authenticateToken, getWishlist);
-// router.post('/users/wishlist/:productId', authenticateToken, addToWishlist);
-// router.delete('/users/wishlist/:productId', authenticateToken, removeFromWishlist);
 
 //admin routes
 router.get('/users', authenticateToken, requireAdmin, getAllUsers);

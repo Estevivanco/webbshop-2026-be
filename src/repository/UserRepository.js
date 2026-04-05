@@ -14,6 +14,10 @@ class UserRepository {
     return await User.findOne({email: email}).select('+passwordHash')
   }
 
+  async findByIdWithPassword(id){
+    return await User.findById(id).select('+passwordHash')
+  }
+
   async create(userData) {
     const user = new User(userData);
     return await user.save();
@@ -25,6 +29,15 @@ class UserRepository {
 
   async delete(id) {
     return User.findByIdAndDelete(id)
+  }
+
+  async updatePassword(userId, newPasswordHash){
+    const user = await User.findById(userId)
+    if(!user) return null
+
+    user.passwordHash = newPasswordHash
+    await user.save()
+    return user
   }
 
   async recordLogin(id) {

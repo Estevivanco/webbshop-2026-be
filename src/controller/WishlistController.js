@@ -1,5 +1,14 @@
 import WishlistRepository from "../repository/WishlistRepository.js";
 
+export async function getAllWishlists(req, res) {
+  try {
+    const wishlists = await WishlistRepository.findAll();
+    res.json(wishlists);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get wishlists" });
+  }
+}
+
 export async function getWishlist(req, res) {
   const userId = req.user.userId;
   try {

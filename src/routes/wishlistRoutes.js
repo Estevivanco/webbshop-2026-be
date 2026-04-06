@@ -4,13 +4,16 @@ import {
   validateWishlistResult,
 } from "../middleware/wishlistValidation.js";
 import {
+  getAllWishlists,
   getWishlist,
   addToWishList,
   removeFromWishlist,
 } from "../controller/WishlistController.js";
-import { authenticateToken} from "../middleware/auth.js";
+import { authenticateToken, requireAdmin } from "../middleware/auth.js";
 
 const router = Router();
+
+router.get("/all", authenticateToken, requireAdmin, getAllWishlists);
 
 router.get("/", authenticateToken, getWishlist);
 

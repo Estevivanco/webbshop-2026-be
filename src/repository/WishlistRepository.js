@@ -15,6 +15,10 @@ class WishlistRepository {
   async removeItem(userId, itemId) {
     return await Wishlist.findOneAndDelete({ user: userId, _id: itemId });
   }
+
+  async findAll() {
+    return await Wishlist.find().populate("product").populate("user", "email firstName lastName");
+  }
 }
 
 export default new WishlistRepository();

@@ -1,10 +1,10 @@
 import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
-import productsRouter from "./routes/products.js";
+import productsRouter from "./routes/productRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
-import orderRouter from "./routes/order.js"
+import orderRouter from "./routes/orderRoutes.js"
 import wishlistRouter from "./routes/wishlistRoutes.js"
 import cors from "cors";
 

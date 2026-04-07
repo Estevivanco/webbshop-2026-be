@@ -31,6 +31,10 @@ class OrderRepository {
       { new: true, runValidators: true },
     );
   }
+
+  async delete(id) {
+    return await Order.findByIdAndDelete(id)
+  }
 }
 
 export default new OrderRepository();

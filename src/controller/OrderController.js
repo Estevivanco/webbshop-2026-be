@@ -102,4 +102,5 @@ export async function deleteOrder(req, res) {
   if (!order) {
     return res.status(404).json({ message: "Order not found" });
   }
+  res.status(204).send()
 }

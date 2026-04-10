@@ -41,7 +41,7 @@ export async function createOrder(req, res) {
 
     const populatedOrder = await OrderRepository.findById(order._id)
     const user = await UserRepository.findById(req.user.userId)
-    await sendOrderConfirmation(populatedOrder, req.user)
+    await sendOrderConfirmation(populatedOrder, user)
 
     res.status(201).json(order);
   } catch (error) {

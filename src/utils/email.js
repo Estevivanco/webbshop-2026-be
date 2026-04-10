@@ -25,7 +25,7 @@ export const sendOrderRecieved = async (order, user) => {
             <p>
     `,
   });
-  consol.log(result)
+  console.log(result)
 };
 
 export const sendOrderConfirmation = async (order, user) => {

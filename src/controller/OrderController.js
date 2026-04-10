@@ -1,7 +1,7 @@
 import OrderRepository from "../repository/OrderRepository.js";
 import ProductRepository from "../repository/ProductRepository.js";
 import UserRepository from "../repository/UserRepository.js"
-import { sendOrderCancellation, sendOrderConfirmation } from "../utils/email.js";
+import { sendOrderCancellation, sendOrderConfirmation, sendOrderRecieved } from "../utils/email.js";
 
 export async function createOrder(req, res) {
   const { items } = req.body;
@@ -41,7 +41,7 @@ export async function createOrder(req, res) {
 
     const populatedOrder = await OrderRepository.findById(order._id)
     const user = await UserRepository.findById(req.user.userId)
-    await sendOrderConfirmation(populatedOrder, user)
+    await sendOrderRecieved(populatedOrder, user)
 
     res.status(201).json(order);
   } catch (error) {
@@ -108,6 +108,11 @@ export async function updateOrderStatus(req, res) {
 
     if (!order) {
       return res.status(404).json({ message: "Order not found." });
+    }
+
+    if (orderStatus === "Confirmed") {
+      const user = UserRepository.findById(order.user._id)
+      await sendOrderConfirmation(order, user)
     }
 
     if (orderStatus === "Cancelled") {

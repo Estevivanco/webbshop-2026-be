@@ -2,6 +2,30 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+export const sendOrderRecieved = async (order, user) => {
+  await resend.emails.send({
+    from: "solesearch@sole.search",
+    to: user.email,
+    subject: "Order recieved",
+    html: `
+    <p> Hello ${user.firstName}, we are currently reviewing your order. 
+        You will recieve an update when the order is confirmed!</p>
+            <h2>Order Summary</h2>
+            <ul>
+                ${order.items
+                  .map(
+                    (item) => `
+                    <li>${item.product.name}, size ${item.size}: á ${item.unitPrice} kr</li>
+                    `,
+                  )
+                  .join("")}
+            </ul>
+            <p>Order Total: ${order.orderTotal} kr</p>
+            <p>
+    `,
+  });
+};
+
 export const sendOrderConfirmation = async (order, user) => {
   await resend.emails.send({
     from: "solesearch@sole.search",
@@ -27,8 +51,6 @@ export const sendOrderConfirmation = async (order, user) => {
               </a>
             </p>
         `,
-    // Total price virtual
-    // Track my order
   });
 };
 

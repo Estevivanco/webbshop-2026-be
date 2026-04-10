@@ -3,7 +3,7 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOrderRecieved = async (order, user) => {
-  await resend.emails.send({
+  const result = await resend.emails.send({
     //Temporary email testing
     from: "onboarding@resend.dev",
     to: "hej@millenialmuzik.se",
@@ -25,6 +25,7 @@ export const sendOrderRecieved = async (order, user) => {
             <p>
     `,
   });
+  consol.log(result)
 };
 
 export const sendOrderConfirmation = async (order, user) => {

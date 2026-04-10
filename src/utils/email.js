@@ -4,8 +4,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOrderRecieved = async (order, user) => {
   await resend.emails.send({
-    from: "solesearch@sole.search",
-    to: user.email,
+    //Temporary email testing
+    from: "onboarding@resend.dev",
+    to: "hej@millenialmuzik.se",
     subject: "Order recieved",
     html: `
     <p> Hello ${user.firstName}, we are currently reviewing your order. 

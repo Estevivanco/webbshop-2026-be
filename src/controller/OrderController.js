@@ -1,5 +1,7 @@
 import OrderRepository from "../repository/OrderRepository.js";
 import ProductRepository from "../repository/ProductRepository.js";
+import UserRepository from "../repository/UserRepository.js"
+import { sendOrderCancellation, sendOrderConfirmation } from "../utils/email.js";
 
 export async function createOrder(req, res) {
   const { items } = req.body;
@@ -37,6 +39,10 @@ export async function createOrder(req, res) {
       ),
     );
 
+    const populatedOrder = await OrderRepository.findById(order._id)
+    const user = await UserRepository.findById(req.user.userId)
+    await sendOrderConfirmation(populatedOrder, req.user)
+
     res.status(201).json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -73,6 +79,24 @@ export async function getOneOrder(req, res) {
   }
 }
 
+export async function getOrderTracking(req, res) {
+  try {
+    const order = await OrderRepository.findById(req.params.id)
+
+    if(!order) {
+      return res.status(404).json({ message: "Order not found."})
+    }
+
+    res.status(200).json({
+      orderId: order._id,
+      orderStatus: order.status,
+      updatedAt: order.updatedAt
+    })
+  } catch (error) {
+    res.status(500).json({ message: error.message})
+  }
+}
+
 export async function updateOrderStatus(req, res) {
   const { orderStatus } = req.body;
 
@@ -84,6 +108,12 @@ export async function updateOrderStatus(req, res) {
 
     if (!order) {
       return res.status(404).json({ message: "Order not found." });
+    }
+
+    if (orderStatus === "Cancelled") {
+      const user = UserRepository.findById(order.user._id)
+      await sendOrderCancellation(order, user)
+
     }
 
     res.status(200).json(order);

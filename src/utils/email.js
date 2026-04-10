@@ -31,7 +31,7 @@ export const sendOrderRecieved = async (order, user) => {
 export const sendOrderConfirmation = async (order, user) => {
   await resend.emails.send({
      //Temporary email testing
-    from: "solesearch@sole.search",
+    from: "onboarding@resend.dev",
     to: "ddaviddahlgren@gmail.com",
     subject: `Order confirmation # ${order._id}`,
     html: `
@@ -60,7 +60,7 @@ export const sendOrderConfirmation = async (order, user) => {
 export const sendOrderCancellation = async (order, user) => {
   await resend.emails.send({
      //Temporary email testing
-    from: "solesearch@sole.search",
+    from: "onboarding@resend.dev",
     to: "ddaviddahlgren@gmail.com",
     subject: `Your order #${order._id} has been cancelled.`,
     html: `

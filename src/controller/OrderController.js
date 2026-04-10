@@ -133,14 +133,22 @@ export async function updateOrderStatus(req, res) {
 }
 
 export async function getOrdersByUser(req, res) {
-  const orders = await OrderRepository.findByUser(req.params.userId);
-  res.status(200).json(orders);
+  try {
+    const orders = await OrderRepository.findByUser(req.params.userId);
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 export async function deleteOrder(req, res) {
-  const order = await OrderRepository.delete(req.params.id);
-  if (!order) {
-    return res.status(404).json({ message: "Order not found" });
+  try {
+    const order = await OrderRepository.delete(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  res.status(204).send();
 }

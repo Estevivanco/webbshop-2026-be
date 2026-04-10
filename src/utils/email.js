@@ -6,7 +6,7 @@ export const sendOrderRecieved = async (order, user) => {
   const result = await resend.emails.send({
     //Temporary email testing
     from: "onboarding@resend.dev",
-    to: "hej@millenialmuzik.se",
+    to: "ddaviddahlgren@gmail.com",
     subject: "Order recieved",
     html: `
     <p> Hello ${user.firstName}, we are currently reviewing your order. 

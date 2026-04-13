@@ -26,6 +26,10 @@ const orderSchema = new mongoose.Schema(
           },
         },
       ],
+      validate: {
+        validator: (arr) => arr.length >=1,
+        message: "Orders must contail at least one item."
+      }
     },
     orderStatus: {
       type: String,

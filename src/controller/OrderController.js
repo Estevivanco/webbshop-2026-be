@@ -1,7 +1,7 @@
 import OrderRepository from "../repository/OrderRepository.js";
 import ProductRepository from "../repository/ProductRepository.js";
 
-export const createOrder = async (req, res) => {
+export async function createOrder(req, res) {
   const { items } = req.body;
 
   try {
@@ -10,11 +10,15 @@ export const createOrder = async (req, res) => {
         const product = await ProductRepository.getProductById(item.product);
         if (!product) throw new Error(`Product ${item.product} not found.`);
 
-        const sizeCheck = product.sizes.find(s => s.size === item.size)
-        if(!sizeCheck) throw new Error(`Size ${item.size} not avalible for ${product.name}`)
-        if(sizeCheck.stock === 0) throw new Error(`Size ${item.size} is out of stock for ${product.name}`)
-        
-          return {
+        const sizeCheck = product.sizes.find((s) => s.size === item.size);
+        if (!sizeCheck)
+          throw new Error(`Size ${item.size} not avalible for ${product.name}`);
+        if (sizeCheck.stock === 0)
+          throw new Error(
+            `Size ${item.size} is out of stock for ${product.name}`,
+          );
+
+        return {
           product: item.product,
           size: item.size,
           unitPrice: product.price,
@@ -28,28 +32,27 @@ export const createOrder = async (req, res) => {
     });
 
     await Promise.all(
-      itemsWithPrice.map(item => ProductRepository.decrementStock(item.product, item.size))
-    )
+      itemsWithPrice.map((item) =>
+        ProductRepository.decrementStock(item.product, item.size),
+      ),
+    );
 
     res.status(201).json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}
 
-export const getAllOrders = async (req, res) => {
-  console.log("getAllOrders hit");
+export async function getAllOrders(req, res) {
   try {
     const orders = await OrderRepository.findAll();
-    console.log("orders fetched:", orders);
     res.status(200).json(orders);
   } catch (error) {
-    console.error("getAllOrders error:", error);
     res.status(500).json({ message: error.message });
   }
-};
+}
 
-export const getOneOrder = async (req, res) => {
+export async function getOneOrder(req, res) {
   try {
     const order = await OrderRepository.findById(req.params.id);
 
@@ -68,9 +71,9 @@ export const getOneOrder = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}
 
-export const updateOrderStatus = async (req, res) => {
+export async function updateOrderStatus(req, res) {
   const { orderStatus } = req.body;
 
   try {
@@ -87,20 +90,17 @@ export const updateOrderStatus = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}
 
-export const getOrdersByUser = async (req, res) => {
-  try {
-    if (
-      req.user.role !== "admin" &&
-      req.params.userId !== req.user.userId.toString()
-    ) {
-      return res.status(403).json({ message: "Not authorized." });
-    }
+export async function getOrdersByUser(req, res) {
+  const orders = await OrderRepository.findByUser(req.params.userId);
+  res.status(200).json(orders);
+}
 
-    const orders = await OrderRepository.findByUser(req.params.userId);
-    res.status(200).json(orders);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+export async function deleteOrder(req, res) {
+  const order = await OrderRepository.delete(req.params.id);
+  if (!order) {
+    return res.status(404).json({ message: "Order not found" });
   }
-};
+  res.status(204).send()
+}

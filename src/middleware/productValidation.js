@@ -25,9 +25,6 @@ export const validateProduct = [
   body("sizes.*.stock")
     .isInt({ min: 0 })
     .withMessage("Each size must have a stock of 0 or more"),
-  body("images").optional().isArray().withMessage("images must be an array"),
-  body("images.*.url").optional().isURL().withMessage("Each image must have a valid URL"),
-  body("images.*.description").optional().isString(),
   body("description").optional().isString(),
   body("colors").optional().isArray().withMessage("colors must be an array"),
   body("colors.*.name").optional().isString(),
@@ -69,9 +66,6 @@ export const validateProductUpdate = [
     .optional()
     .isInt({ min: 0 })
     .withMessage("Each size must have a valid stock"),
-  body("images").optional().isArray().withMessage("images must be an array"),
-  body("images.*.url").optional().isURL().withMessage("Each image must have a valid URL"),
-  body("images.*.description").optional().isString(),
   body("description").optional().isString(),
   body("colors").optional().isArray().withMessage("colors must be an array"),
   body("colors.*.name").optional().isString(),

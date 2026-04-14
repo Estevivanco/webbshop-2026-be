@@ -12,6 +12,7 @@ import {
   deleteProduct,
 } from "../controller/ProductController.js";
 import { authenticateToken, requireAdmin } from "../middleware/auth.js";
+import upload from "../middleware/imageUploader.js";
 
 const router = Router();
 
@@ -23,6 +24,7 @@ router.post(
   "/",
   authenticateToken,
   requireAdmin,
+  upload.array("images",4),
   validateProduct,
   validateProductResult,
   createProduct,
@@ -32,6 +34,7 @@ router.put(
   "/:slug",
   authenticateToken,
   requireAdmin,
+  upload.array("images",4),
   validateProductUpdate,
   validateProductResult,
   updateProduct,

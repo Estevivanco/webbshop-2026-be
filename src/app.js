@@ -7,6 +7,7 @@ import userRouter from "./routes/userRoutes.js";
 import orderRouter from "./routes/orderRoutes.js"
 import wishlistRouter from "./routes/wishlistRoutes.js"
 import cors from "cors";
+import { globalErrorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 
@@ -49,5 +50,7 @@ app.use("/auth", authRouter);
 app.use("/", userRouter);
 app.use("/orders", orderRouter)
 //TODO: Add more routes as needed
+
+app.use(globalErrorHandler);
 
 export default app;

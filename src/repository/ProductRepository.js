@@ -35,10 +35,10 @@ class ProductRepository {
     return await Product.findOneAndDelete({ slug });
   }
 
-  async decrementStock(productId, size) {
+  async decrementStock(productId, size, quantity = 1) {
   return await Product.findOneAndUpdate(
     { _id: productId, "sizes.size": size },
-    { $inc: { "sizes.$.stock": -1 } },
+    { $inc: { "sizes.$.stock": -quantity } },
     { new: true }
   );
 }

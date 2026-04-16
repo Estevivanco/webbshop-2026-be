@@ -1,5 +1,11 @@
 import OrderRepository from "../repository/OrderRepository.js";
 import ProductRepository from "../repository/ProductRepository.js";
+import UserRepository from "../repository/UserRepository.js";
+import {
+  sendOrderCancellation,
+  sendOrderConfirmation,
+  sendOrderRecieved,
+} from "../utils/email.js";
 
 export async function createOrder(req, res) {
   const { items } = req.body;
@@ -37,6 +43,10 @@ export async function createOrder(req, res) {
       ),
     );
 
+    const populatedOrder = await OrderRepository.findById(order._id);
+    const user = await UserRepository.findById(req.user.userId);
+    await sendOrderRecieved(populatedOrder, user);
+
     res.status(201).json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -73,6 +83,24 @@ export async function getOneOrder(req, res) {
   }
 }
 
+export async function getOrderTracking(req, res) {
+  try {
+    const order = await OrderRepository.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    res.status(200).json({
+      orderId: order._id,
+      orderStatus: order.orderStatus,
+      updatedAt: order.updatedAt,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export async function updateOrderStatus(req, res) {
   const { orderStatus } = req.body;
 
@@ -86,6 +114,18 @@ export async function updateOrderStatus(req, res) {
       return res.status(404).json({ message: "Order not found." });
     }
 
+    if (orderStatus === "Confirmed") {
+      const populatedOrder = await OrderRepository.findById(order._id);
+      const user = await UserRepository.findById(order.user._id);
+      await sendOrderConfirmation(populatedOrder, user);
+    }
+
+    if (orderStatus === "Cancelled") {
+      const populatedOrder = await OrderRepository.findById(order._id);
+      const user = await UserRepository.findById(order.user._id);
+      await sendOrderCancellation(populatedOrder, user);
+    }
+
     res.status(200).json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -93,14 +133,22 @@ export async function updateOrderStatus(req, res) {
 }
 
 export async function getOrdersByUser(req, res) {
-  const orders = await OrderRepository.findByUser(req.params.userId);
-  res.status(200).json(orders);
+  try {
+    const orders = await OrderRepository.findByUser(req.params.userId);
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 export async function deleteOrder(req, res) {
-  const order = await OrderRepository.delete(req.params.id);
-  if (!order) {
-    return res.status(404).json({ message: "Order not found" });
+  try {
+    const order = await OrderRepository.delete(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  res.status(204).send()
 }

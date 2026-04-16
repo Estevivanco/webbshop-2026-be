@@ -24,6 +24,12 @@ const orderSchema = new mongoose.Schema(
             required: true,
             min: 0,
           },
+          quantity: {
+            type: Number,
+            required: true,
+            min: 1,
+            default: 1
+          }
         },
       ],
       validate: {
@@ -42,7 +48,7 @@ const orderSchema = new mongoose.Schema(
 
 orderSchema.virtual("orderTotal").get(function () {
   if(!this.items || this.items.length === 0) return 0
-  return this.items.reduce((sum, item) => sum + item.unitPrice, 0);
+  return this.items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
 });
 
 const Order = mongoose.model("Order", orderSchema);

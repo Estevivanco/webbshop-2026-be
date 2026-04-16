@@ -19,7 +19,7 @@ export async function createOrder(req, res) {
         const sizeCheck = product.sizes.find((s) => s.size === item.size);
         if (!sizeCheck)
           throw new Error(`Size ${item.size} not avalible for ${product.name}`);
-        if (sizeCheck.stock === 0)
+        if (sizeCheck.stock < item.quantity)
           throw new Error(
             `Size ${item.size} is out of stock for ${product.name}`,
           );
@@ -28,6 +28,7 @@ export async function createOrder(req, res) {
           product: item.product,
           size: item.size,
           unitPrice: product.price,
+          quantity: item.quantity || 1
         };
       }),
     );
@@ -39,7 +40,7 @@ export async function createOrder(req, res) {
 
     await Promise.all(
       itemsWithPrice.map((item) =>
-        ProductRepository.decrementStock(item.product, item.size),
+        ProductRepository.decrementStock(item.product, item.size, item.quantity),
       ),
     );
 

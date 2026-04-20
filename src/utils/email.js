@@ -16,6 +16,7 @@ export const sendOrderRecieved = async (order, user) => {
             </h1>
             <p style="font-size: 14px;">  
               You will recieve an update when the order is confirmed.</p>
+              <p style="font-size: 14px;"><i>Kind regards, the Sole Search team.</i></p>
              <h2 style="font-size: 18px; margin-top: 24px;">Order Summary</h2>
             <ul style="list-style: none; padding: 0;">
                 ${order.items
@@ -50,6 +51,7 @@ export const sendOrderConfirmation = async (order, user) => {
                 Your order <i>#${order._id}</i> is being processed for shipping.</p>
               <p style="font-size: 14px;">
                 If you have any questions or wish to change or cancel your order, please contact us as soon as possible.</p>
+                <p style="font-size: 14px;"><i>Kind regards, the Sole Search team.</i></p>
             <h2 style="font-size: 18px; margin-top: 24px;">Order Summary</h2>
             <ul style="list-style: none; padding: 0;">
                 ${order.items
@@ -85,6 +87,7 @@ export const sendOrderShipped = async (order, user) => {
             </h1>
             <p style="font-size: 14px;"> Your order <i>#${order._id}</i> has been shipped out and will be delivered to your adress.</p>
              <p style="font-size: 14px;">If you have any questions, please contact us.</p>
+             <p style="font-size: 14px;"><i>Kind regards, the Sole Search team.</i></p>
               <a href="${FRONTEND_URL}/orders/${order._id}/track"
                  style="display: inline-block; padding: 12px 24px; text-decoration: none; font-size: 14px; border: none;">
                 Track you order
@@ -105,7 +108,8 @@ export const sendOrderDelivered = async (order, user) => {
               Hi <strong>${user.firstName} </strong> and thank's again for shopping at Sole Search!
             </h1>
             <p style="font-size: 14px;"> Your order <i>#${order._id}</i> has been been delivered. Please rate and review our site and enjoy your brand new sneakers!</p>
-             <p style="font-size: 14px;">If you have any questions, please contact us.</p>
+            <p style="font-size: 14px;">If you have any questions, please contact us.</p>
+            <p style="font-size: 14px;"><i>Kind regards, the Sole Search team.</i></p>
           </div>
         `,
   });

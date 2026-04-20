@@ -19,8 +19,8 @@ export async function register(req, res) {
       location 
     });
 
-    const accessToken = generateAccessToken(user._id, user.role);
-    const refreshToken = generateRefreshToken(user._id, user.role);
+    const accessToken = generateAccessToken(user._id, user.role, user.firstName);
+    const refreshToken = generateRefreshToken(user._id, user.role, user.firstName);
 
     res.status(201).json({
       user: { 

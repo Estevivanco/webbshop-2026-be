@@ -39,9 +39,16 @@ const orderSchema = new mongoose.Schema(
     },
     orderStatus: {
       type: String,
-      enum: ["Pending", "Confirmed", "Cancelled"],
+      enum: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"],
       default: "Pending",
     },
+    tracking: {
+      recievedAt: { type: Date },
+      confirmedAt: { type: Date },
+      shippedAt: { type: Date },
+      deliveredAt: { type: Date },
+      cencelledAt: { type: Date }
+    }
   },
   { timestamps: true, toJSON: { virtuals: true } },
 );

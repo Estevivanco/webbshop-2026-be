@@ -89,7 +89,7 @@ export async function refreshToken(req, res) {
       return res.status(401).json({ error: "User not found" });
     }
 
-    const accessToken = generateAccessToken(user._id, user.role);
+    const accessToken = generateAccessToken(user._id, user.role, user.firstName);
     
     res.json({ accessToken });
   } catch (error) {

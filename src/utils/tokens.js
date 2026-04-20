@@ -13,7 +13,7 @@ const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 const JWT_ACCESS_EXPIRES = process.env.JWT_ACCESS_EXPIRES || "15m";
 const JWT_REFRESH_EXPIRES = process.env.JWT_REFRESH_EXPIRES || "7d";
 
-export const generateAccessToken = (userId, role = 'customer') => {
+export const generateAccessToken = (userId, role = 'customer', firstName = '') => {
     return jwt.sign(
         { userId, role, firstName },
         JWT_ACCESS_SECRET,
@@ -21,7 +21,7 @@ export const generateAccessToken = (userId, role = 'customer') => {
     )
 }
 
-export const generateRefreshToken = (userId, role = 'customer') => {
+export const generateRefreshToken = (userId, role = 'customer', firstName = '') => {
     return jwt.sign(
         { userId, role, firstName },
         JWT_REFRESH_SECRET,

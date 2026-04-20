@@ -4,7 +4,9 @@ import UserRepository from "../repository/UserRepository.js";
 import {
   sendOrderCancellation,
   sendOrderConfirmation,
+  sendOrderDelivered,
   sendOrderRecieved,
+  sendOrderShipped,
 } from "../utils/email.js";
 
 export async function createOrder(req, res) {
@@ -130,6 +132,18 @@ export async function updateOrderStatus(req, res) {
       const populatedOrder = await OrderRepository.findById(order._id);
       const user = await UserRepository.findById(order.user._id);
       await sendOrderConfirmation(populatedOrder, user);
+    }
+
+    if (orderStatus === "Shipped") {
+      const populatedOrder = await OrderRepository.findById(order._id)
+      const user = await UserRepository.findById(order.user._id)
+      await sendOrderShipped(populatedOrder, user)
+    }
+
+    if (orderStatus === "Delivered") {
+      const populatedOrder = await OrderRepository.findById(order._id)
+      const user = await UserRepository.findById(order.user._id)
+      await sendOrderDelivered(populatedOrder, user)
     }
 
     if (orderStatus === "Cancelled") {

@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Email is required"],
     unique: true,
-    lowerCase: true,
+    lowercase: true,
     trim: true,
     index: true,
   },
@@ -69,13 +69,6 @@ userSchema.pre("save", async function (next) {
   if (this.isModified("passwordHash")) {
     const salt = await bcrypt.genSalt(10);
     this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
-  }
-  next();
-});
-
-userSchema.pre("save", async function (next) {
-  if (this.isModified("email")) {
-    this.email = this.email.toLowerCase().trim();
   }
   next();
 });

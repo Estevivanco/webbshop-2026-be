@@ -28,7 +28,7 @@ export async function createOrder(req, res) {
           product: item.product,
           size: item.size,
           unitPrice: product.price,
-          quantity: item.quantity || 1
+          quantity: item.quantity || 1,
         };
       }),
     );
@@ -40,7 +40,11 @@ export async function createOrder(req, res) {
 
     await Promise.all(
       itemsWithPrice.map((item) =>
-        ProductRepository.decrementStock(item.product, item.size, item.quantity),
+        ProductRepository.decrementStock(
+          item.product,
+          item.size,
+          item.quantity,
+        ),
       ),
     );
 
@@ -95,6 +99,13 @@ export async function getOrderTracking(req, res) {
     res.status(200).json({
       orderId: order._id,
       orderStatus: order.orderStatus,
+      tracking: {
+        recievedAt: order.tracking?.recievedAt,
+        confirmedAt: order.tracking?.confirmedAt,
+        shippedAt: order.tracking?.shippedAt,
+        deliveredAt: order.tracking?.deliveredAt,
+        cancelledAt: order.tracking?.cancelledAt,
+      },
       updatedAt: order.updatedAt,
     });
   } catch (error) {

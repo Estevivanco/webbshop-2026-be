@@ -2,7 +2,10 @@ import Order from "../models/Order.js";
 
 class OrderRepository {
   async create(orderData) {
-    const order = new Order(orderData);
+    const order = new Order({
+      ...orderData,
+      tracking: { recievedAt: new Date() }
+    });
     return await order.save();
   }
 
@@ -25,9 +28,18 @@ class OrderRepository {
   }
 
   async updateStatus(id, orderStatus) {
+    const statusDates = {
+      Confirmed: "tracking.confirmedAt",
+      Shipped: "tracking.shippedAt",
+      Delivered: "tracking.deliveredAt",
+      Cancelled: "tracking.cancelleddAt",
+    }[orderStatus]
+
     return await Order.findByIdAndUpdate(
       id,
-      { orderStatus },
+      { orderStatus,
+        ...(statusDates && { [statusDates]: new Date() })
+       },
       { new: true, runValidators: true },
     );
   }

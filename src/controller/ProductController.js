@@ -12,25 +12,9 @@ export async function createProduct(req, res) {
     const imageUrls = req.files?.map(file => ({
       url: file.path
     })) || []
-
-    const parsedBody = {
-      ...req.body,
-      sizes:
-        typeof req.body.sizes === "string"
-          ? JSON.parse(req.body.sizes)
-          : req.body.sizes,
-      colors:
-        typeof req.body.colors === "string"
-          ? JSON.parse(req.body.colors)
-          : req.body.colors,
-      price:
-        typeof req.body.price === "string"
-          ? Number(req.body.price)
-          : req.body.price,
-    }
-
+  
     const product = await ProductRepository.createProduct({
-      ...parsed.body,
+      ...req.body,
       images: imageUrls
     });
 

@@ -10,7 +10,7 @@ const PORT = process.env.PORT ?? 3000;
 const startServer = async () => {
   try {
     await connectToDatabase();
-    startCronJobs
+    startCronJobs()
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });

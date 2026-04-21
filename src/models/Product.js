@@ -91,6 +91,7 @@ productSchema.pre("save", function (next) {
 // VALIDATOR: dropEnd måste vara efter dropAt
 productSchema.path("dropEnd").validate(function (val) {
   if (!val) return true;
+  if (!this.dropAt) return true;
   return val > this.dropAt;
 }, "dropEnd must be after dropAt");
 

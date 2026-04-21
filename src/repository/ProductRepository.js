@@ -25,7 +25,7 @@ class ProductRepository {
   }
 
   async updateProduct(slug, data) {
-    return await Product.findOneAndUpdate({ slug }, data, {
+    return await Product.findOneAndUpdate({ slug }, { $set: data }, {
       new: true,
       runValidators: true,
     });

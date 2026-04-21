@@ -4,7 +4,7 @@ import Product from "../models/Product.js";
 export function startCronJobs() {
   console.log("Cron jobs started");
   
-  cron.schedule("* * * * *", async () => {
+  cron.schedule("*/10 * * * * *", async () => {
     console.log("Cron tick at", new Date().toISOString());
     try {
       const now = new Date();

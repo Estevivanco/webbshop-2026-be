@@ -11,7 +11,16 @@ import { globalErrorHandler } from "./middleware/errorHandler.js";
 import cron from "node-cron";
 import Product from "./models/Product.js";
 
-cron.schedule("* * * * *", async () => {
+const app = express();
+
+let isConnected = false;
+
+async function connectDB() {
+  if (isConnected) return;
+  await mongoose.connect(process.env.MONGODB_URI);
+  isConnected = true;
+
+  cron.schedule("* * * * *", async () => {
   const now = new Date();
 
   await Product.updateMany(
@@ -23,16 +32,8 @@ cron.schedule("* * * * *", async () => {
       $set: { dropStatus: "Live" },
     },
   );
+  console.log("Drop status check ran at", now)
 });
-
-const app = express();
-
-let isConnected = false;
-
-async function connectDB() {
-  if (isConnected) return;
-  await mongoose.connect(process.env.MONGODB_URI);
-  isConnected = true;
 }
 
 // Middleware

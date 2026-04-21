@@ -37,6 +37,7 @@ router.put(
   authenticateToken,
   requireAdmin,
   upload.array("images",4),
+  parseProductFormData,
   validateProductUpdate,
   validateProductResult,
   updateProduct,

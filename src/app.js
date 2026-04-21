@@ -8,8 +8,6 @@ import orderRouter from "./routes/orderRoutes.js";
 import wishlistRouter from "./routes/wishlistRoutes.js";
 import cors from "cors";
 import { globalErrorHandler } from "./middleware/errorHandler.js";
-import cron from "node-cron";
-import Product from "./models/Product.js";
 
 const app = express();
 
@@ -19,21 +17,6 @@ async function connectDB() {
   if (isConnected) return;
   await mongoose.connect(process.env.MONGODB_URI);
   isConnected = true;
-
-  cron.schedule("* * * * *", async () => {
-  const now = new Date();
-
-  await Product.updateMany(
-    {
-      dropStatus: "Upcoming",
-      dropAt: { $lte: now },
-    },
-    {
-      $set: { dropStatus: "Live" },
-    },
-  );
-  console.log("Drop status check ran at", now)
-});
 }
 
 // Middleware

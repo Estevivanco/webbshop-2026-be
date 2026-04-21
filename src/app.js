@@ -4,8 +4,8 @@ import mongoose from "mongoose";
 import productsRouter from "./routes/productsRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
-import orderRouter from "./routes/orderRoutes.js"
-import wishlistRouter from "./routes/wishlistRoutes.js"
+import orderRouter from "./routes/orderRoutes.js";
+import wishlistRouter from "./routes/wishlistRoutes.js";
 import cors from "cors";
 import { globalErrorHandler } from "./middleware/errorHandler.js";
 
@@ -44,7 +44,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.get("/", (req, res) => {
-  res.json({ message: "Webbshop API", stack: "MEN (MongoDB, Express, Node.js)" });
+  res.json({
+    message: "Webbshop API",
+    stack: "MEN (MongoDB, Express, Node.js)",
+  });
 });
 
 app.get("/health", (req, res) => {
@@ -55,7 +58,7 @@ app.use("/wishlist", wishlistRouter);
 app.use("/products", productsRouter);
 app.use("/auth", authRouter);
 app.use("/", userRouter);
-app.use("/orders", orderRouter)
+app.use("/orders", orderRouter);
 //TODO: Add more routes as needed
 
 app.use(globalErrorHandler);

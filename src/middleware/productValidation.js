@@ -75,6 +75,27 @@ export const validateProductUpdate = [
     .withMessage("hex must be a valid color, e.g. #fff or #1a1a1a"),
 ];
 
+export const parseProductFormData = (req,res,next) => {
+  try {
+    if (typeof req.body.sizes === "string") {
+      req.body.sizes = JSON.parse(req.body.sizes);
+    }
+
+    if (typeof req.body.colors === "string") {
+      req.body.colors = JSON.parse(req.body.colors);
+    }
+
+    if (typeof req.body.price === "string") {
+      req.body.price = Number(req.body.price);
+    }
+    console.log("parsed sizes:", JSON.stringify(req.body.sizes));
+
+    next();
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid form data" });
+  }
+} 
+
 export const validateProductResult = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

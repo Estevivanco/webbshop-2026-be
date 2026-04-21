@@ -3,6 +3,7 @@ import {
   validateProduct,
   validateProductUpdate,
   validateProductResult,
+  parseProductFormData
 } from "../middleware/productValidation.js";
 import {
   getProducts,
@@ -25,6 +26,7 @@ router.post(
   authenticateToken,
   requireAdmin,
   upload.array("images",4),
+  parseProductFormData,
   validateProduct,
   validateProductResult,
   createProduct,

@@ -100,10 +100,15 @@ export async function getAllUsers(req, res) {
 
     const filteredUsers = users.map(user => ({
       id: user._id,
+      name: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       role: user.role,
+      isActive: user.isActive,
       createdAt: user.createdAt
     }));
+
+    console.log("filteredUsers:", JSON.stringify(filteredUsers));
     
     res.json(filteredUsers);
   } catch (err) {
@@ -224,6 +229,28 @@ export async function makeAdmin(req, res) {
     console.error("Error making user admin:", err);
     res.status(500).json({
       error: "Could not make admin",
+      message: err.message
+    });
+  }
+}
+export async function removeAdmin(req, res) {
+  try {
+    const user = await UserRepository.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (user.role !== "admin") {
+      return res.status(400).json({ error: "User is not an admin" });
+    }
+
+    const updatedUser = await UserRepository.setRole(req.params.id, "user");
+    res.json({ message: "User demoted to user", user: updatedUser });
+  } catch (err) {
+    console.error("Error removing admin:", err);
+    res.status(500).json({
+      error: "Could not remove admin",
       message: err.message
     });
   }

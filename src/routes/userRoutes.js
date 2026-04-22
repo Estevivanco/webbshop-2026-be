@@ -3,14 +3,15 @@ import {
     getProfile, 
     getAllUsers, 
     getUserById, 
-    makeAdmin, 
+    makeAdmin,
+    removeAdmin, 
     deactivateUser, 
     updateUser, 
     updateProfile,
     changePassword,
     deleteProfile, 
     reactivateUser, 
-    permanentDeleteUser
+    permanentDeleteUser,
 } from "../controller/UserController.js";
 import { authenticateToken, requireAdmin} from "../middleware/auth.js";
 import {validateUpdateUser} from '../middleware/userValidation.js';
@@ -31,6 +32,7 @@ router.delete('/users/:id/deactivate', authenticateToken, requireAdmin, deactiva
 router.patch('/users/:id/reactivate', authenticateToken, requireAdmin, reactivateUser);
 router.delete('/users/:id/permanent', authenticateToken, requireAdmin, permanentDeleteUser);
 router.post('/users/:id/make-admin', authenticateToken, requireAdmin, makeAdmin);
+router.patch('/users/:id/remove-admin', authenticateToken, requireAdmin, removeAdmin);
 
 
 

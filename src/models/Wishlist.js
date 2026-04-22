@@ -12,13 +12,7 @@ const wishlistItemSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: true,
-    },
- 
-    size: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    }
   },
   { timestamps: true }
 );
@@ -27,7 +21,7 @@ const wishlistItemSchema = new mongoose.Schema(
 // En user ska inte kunna spara samma produkt + storlek två gånger.
 
 wishlistItemSchema.index(
-  { user: 1, product: 1, size: 1 },
+  { user: 1, product: 1 },
   { unique: true }
 );
  

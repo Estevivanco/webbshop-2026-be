@@ -21,14 +21,20 @@ export async function getWishlist(req, res) {
 
 export async function addToWishList(req, res) {
   const userId = req.user.userId;
-  const { productId, size } = req.body;
+  const { productId } = req.body;
+
+  if (!productId) {
+    return res.status(400).json({ error: "productId is required" });
+  }
+
   try {
-    const wishlist = await WishlistRepository.addItem(userId, productId, size);
+    const wishlist = await WishlistRepository.addItem(userId, productId);
     res.status(201).json(wishlist);
   } catch (error) {
     if (error.code === 11000) {
       return res.status(409).json({ error: "Already in wishlist" });
     }
+
     res.status(500).json({ error: "Failed to add to wishlist" });
   }
 }

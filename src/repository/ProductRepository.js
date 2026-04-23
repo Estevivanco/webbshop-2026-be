@@ -12,6 +12,7 @@ class ProductRepository {
   async createProduct(productData) {
     try {
       const product = new Product(productData);
+      product.updateDropStatus();
       await product.save();
       return product;
     } catch (error) {

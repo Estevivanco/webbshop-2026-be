@@ -6,8 +6,10 @@ import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import wishlistRouter from "./routes/wishlistRoutes.js";
+import cronRouter from "./routes/cron.js"
 import cors from "cors";
 import { globalErrorHandler } from "./middleware/errorHandler.js";
+
 
 const app = express();
 
@@ -59,6 +61,7 @@ app.use("/products", productsRouter);
 app.use("/auth", authRouter);
 app.use("/", userRouter);
 app.use("/orders", orderRouter);
+app.use("/cron")
 //TODO: Add more routes as needed
 
 app.use(globalErrorHandler);

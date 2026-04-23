@@ -1,7 +1,7 @@
 import Wishlist from "../models/Wishlist.js";
 
 class WishlistRepository {
-  async addItem(userId, productId, size) {
+  async addItem(userId, productId) {
     const wishlist = new Wishlist({ user: userId, product: productId });
     await wishlist.save();
     await wishlist.populate("product");

@@ -61,7 +61,7 @@ app.use("/products", productsRouter);
 app.use("/auth", authRouter);
 app.use("/", userRouter);
 app.use("/orders", orderRouter);
-app.use("/cron")
+app.use("/cron", cronRouter)
 //TODO: Add more routes as needed
 
 app.use(globalErrorHandler);

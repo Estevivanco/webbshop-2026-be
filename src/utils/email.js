@@ -4,6 +4,8 @@ const FRONTEND_URL = "https://webbshop-2026-fe.vercel.app/";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOrderRecieved = async (order, user) => {
+    console.log("Sending to:", user?.email, "User object:", user);
+
   const result = await resend.emails.send({
     //Temporary email testing
     from: "onboarding@resend.dev",

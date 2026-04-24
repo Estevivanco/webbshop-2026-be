@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 const FRONTEND_URL = "https://webbshop-2026-fe.vercel.app/";
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend("re_cLs3WYvU_BfU44FYft3aQxAA6G68A4cPV");
 
 export const sendOrderRecieved = async (order, user) => {
     console.log("Sending to:", user?.email, "User object:", user);

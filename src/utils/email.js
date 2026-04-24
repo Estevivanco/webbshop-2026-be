@@ -7,7 +7,7 @@ export const sendOrderRecieved = async (order, user) => {
   const result = await resend.emails.send({
     //Temporary email testing
     from: "onboarding@resend.dev",
-    to: `${user.email}`,
+    to: "daviddahlgren@gmail.com",
     subject: "Order recieved",
     html: `
           <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
@@ -40,7 +40,7 @@ export const sendOrderConfirmation = async (order, user) => {
   await resend.emails.send({
     //Temporary email testing
     from: "onboarding@resend.dev",
-    to: `${user.email}`,
+    to: "daviddahlgren@gmail.com",
     subject: `Order confirmation # ${order._id}`,
     html: `
           <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
@@ -78,7 +78,7 @@ export const sendOrderShipped = async (order, user) => {
   await resend.emails.send({
     //Temporary email testing
     from: "onboarding@resend.dev",
-    to: `${user.email}`,
+    to: "daviddahlgren@gmail.com",
     subject: `Your order has beed shipped out for delivery!`,
     html: `
           <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
@@ -100,7 +100,7 @@ export const sendOrderDelivered = async (order, user) => {
   await resend.emails.send({
     //Temporary email testing
     from: "onboarding@resend.dev",
-    to: `${user.email}`,
+    to: "daviddahlgren@gmail.com",
     subject: `Your order has beed delivered!`,
     html: `
           <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
@@ -119,7 +119,7 @@ export const sendOrderCancellation = async (order, user) => {
   await resend.emails.send({
     //Temporary email testing
     from: "onboarding@resend.dev",
-    to: `${user.email}`,
+    to: "daviddahlgren@gmail.com",
     subject: `Your order #${order._id} has been cancelled.`,
     html: `
           <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">

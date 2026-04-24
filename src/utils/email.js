@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+const FRONTEND_URL = "https://webbshop-2026-fe.vercel.app/";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOrderRecieved = async (order, user) => {

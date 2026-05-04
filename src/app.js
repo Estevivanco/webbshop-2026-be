@@ -33,7 +33,7 @@ app.use(async (req, res, next) => {
 
 // Middleware
 
-app.use(cors("*"));
+app.use(cors());
 // app.use(express.json());
 
 app.use((req, res, next) => {
